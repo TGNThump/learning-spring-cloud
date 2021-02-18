@@ -1,0 +1,27 @@
+version: "3"
+services:
+  eris-core-config-server:
+    image: eris-core-config-server:latest
+    environment:
+      DISCOVER_SERVER: eris-core-discovery-server
+    networks:
+      - eris
+    volumes:
+      - "./config:/workspace/config"
+  eris-core-discovery-server:
+    image: eris-core-discovery-server:latest
+    environment:
+      CONFIG_SERVER: eris-core-config-server
+    networks:
+      - eris
+  eris-core-admin-server:
+    image: eris-core-admin-server:latest
+    environment:
+      CONFIG_SERVER: eris-core-config-server
+      DISCOVER_SERVER: eris-core-discovery-server
+    networks:
+      - eris
+    ports:
+      - "1846:1846"
+networks:
+  eris: {}
